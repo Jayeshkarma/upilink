@@ -24,15 +24,24 @@ const UpiLinkGenerator = () => {
     }
 
     // Generate result link
-    const resultLink = `https://pay.upilink.in/pay/${upiId}?am=${amount}`;
+    const resultLink = `upi://pay/?pn=withUpilink.in&pa=${upiId}&cu=INR&am=${amount}`;
     setResultLink(resultLink);
     setShowForm(false);
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(resultLink);
-    alert("Link copied to clipboard!");
+    const linkElement = document.createElement('textarea');
+    linkElement.value = resultLink;
+    linkElement.setAttribute('readonly', '');
+    linkElement.style.position = 'absolute';
+    linkElement.style.left = '-9999px';
+    document.body.appendChild(linkElement);
+    linkElement.select();
+    document.execCommand('copy');
+    document.body.removeChild(linkElement);
+    alert('Link copied to clipboard!');
   };
+
 
   const handleCreateNewLink = () => {
     setShowForm(true);
