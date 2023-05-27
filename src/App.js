@@ -42,28 +42,28 @@ const UpiLinkGenerator = () => {
     alert('Link copied to clipboard!');
   };
 
-  const handleShareLink = () => {
-    const shareText = 'Check out this UPI payment link:';
-    const encodedResultLink = encodeURIComponent(resultLink);
-    const shareUrl = `https://example.com/share?text=${encodeURIComponent(shareText)}&url=${encodedResultLink}`;
-  
-    if (navigator.share) {
-      navigator.share({
-        title: 'UPI Payment Link',
-        text: shareText,
-        url: shareUrl
+ const handleShareLink = () => {
+  const shareText = `Check out this UPI payment link: ${resultLink}`;
+  const encodedResultLink = encodeURIComponent(resultLink);
+  const shareUrl = `${encodedResultLink}`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'UPI Payment Link',
+      text: shareText,
+      // url: resultLink
+    })
+      .then(() => {
+        console.log('Link shared successfully!');
       })
-        .then(() => {
-          console.log('Link shared successfully!');
-        })
-        .catch((error) => {
-          console.error('Error sharing link:', error);
-        });
-    } else {
-      console.warn('Sharing is not supported in this browser.');
-    }
-  };
-  
+      .catch((error) => {
+        console.error('Error sharing link:', error);
+      });
+  } else {
+    console.warn('Sharing is not supported in this browser.');
+  }
+};
+
 
 
   const handleCreateNewLink = () => {
@@ -152,7 +152,7 @@ const UpiLinkGenerator = () => {
           <li>iMobile App</li>
         </ul>
       </div>
-      <p style={{fontSize:'8px'}}>Version 1.01</p>
+      <p style={{fontSize:'8px'}}>Version 1.02</p>
     </div>
   );
 };
