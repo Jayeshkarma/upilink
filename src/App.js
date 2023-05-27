@@ -43,11 +43,15 @@ const UpiLinkGenerator = () => {
   };
 
   const handleShareLink = () => {
+    const shareText = 'Check out this UPI payment link:';
+    const encodedResultLink = encodeURIComponent(resultLink);
+    const shareUrl = `https://example.com/share?text=${encodeURIComponent(shareText)}&url=${encodedResultLink}`;
+  
     if (navigator.share) {
       navigator.share({
         title: 'UPI Payment Link',
-        text: 'Check out this UPI payment link!',
-        url: resultLink
+        text: shareText,
+        url: shareUrl
       })
         .then(() => {
           console.log('Link shared successfully!');
@@ -56,11 +60,10 @@ const UpiLinkGenerator = () => {
           console.error('Error sharing link:', error);
         });
     } else {
-      alert('Sharing is not supported on this device.');
+      console.warn('Sharing is not supported in this browser.');
     }
   };
-
-
+  
 
 
   const handleCreateNewLink = () => {
