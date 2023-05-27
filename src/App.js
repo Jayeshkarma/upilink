@@ -43,7 +43,7 @@ const UpiLinkGenerator = () => {
   };
 
  const handleShareLink = () => {
-  const shareText = `Please make a payment of amount ${amountFormatted} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\n https://upi-payment-free-link-generator.vercel.app/`;
+  const shareText = `Please make a payment of amount ${parseFloat(amount)?.toFixed(2)} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\n https://upi-payment-free-link-generator.vercel.app/`;
   const encodedResultLink = encodeURIComponent(resultLink);
   const shareUrl = `${encodedResultLink}`;
 
