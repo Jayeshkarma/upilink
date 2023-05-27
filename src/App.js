@@ -109,7 +109,7 @@ const UpiLinkGenerator = () => {
           </div>
         )}
       </div>
-      <h5>Made with ❤ in India for you</h5>
+      <h5>Made with ❤️ in India for you</h5>
       <div className="payment-apps">
         <h3>Supported UPI Payment Apps:</h3>
         <ul>
@@ -125,6 +125,7 @@ const UpiLinkGenerator = () => {
           <li>iMobile App</li>
         </ul>
       </div>
+      <p style={{fontSize:'8px'}}>Version 1.01</p>
     </div>
   );
 };
