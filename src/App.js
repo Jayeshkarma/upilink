@@ -42,6 +42,26 @@ const UpiLinkGenerator = () => {
     alert('Link copied to clipboard!');
   };
 
+  const handleShareLink = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'UPI Payment Link',
+        text: 'Check out this UPI payment link!',
+        url: resultLink
+      })
+        .then(() => {
+          console.log('Link shared successfully!');
+        })
+        .catch((error) => {
+          console.error('Error sharing link:', error);
+        });
+    } else {
+      alert('Sharing is not supported on this device.');
+    }
+  };
+
+
+
 
   const handleCreateNewLink = () => {
     setShowForm(true);
@@ -101,6 +121,10 @@ const UpiLinkGenerator = () => {
               </a>
               <button className="copy-btn" onClick={handleCopyLink}>
                 Copy Link
+              </button>
+             <span> </span>
+              <button className="copy-btn" onClick={handleShareLink}>
+                Share Link
               </button>
             </div>
             <button className="new-link-btn" onClick={handleCreateNewLink}>
