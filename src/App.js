@@ -24,7 +24,7 @@ const UpiLinkGenerator = () => {
     }
 
     // Generate result link
-    const resultLink = `upi://pay/?pn=withUpilink.in&pa=${upiId}&cu=INR&am=${amount}`;
+    const resultLink = `upi://pay/?pn=withUpilink.in&pa=${upiId}&cu=INR&am=${parseFloat(amount)?.toFixed(2)}`;
     setResultLink(resultLink);
     setShowForm(false);
   };
@@ -43,7 +43,7 @@ const UpiLinkGenerator = () => {
   };
 
  const handleShareLink = () => {
-  const shareText = `Check out this UPI payment link: ${resultLink}`;
+  const shareText = `Please make payent of ammount ${parseFloat(amount)?.toFixed(2)} using UPI payment link: ${resultLink}`;
   const encodedResultLink = encodeURIComponent(resultLink);
   const shareUrl = `${encodedResultLink}`;
 
@@ -102,7 +102,7 @@ const UpiLinkGenerator = () => {
                 id="amount"
                 name="amount"
                 value={amount}
-                onChange={(e) => setAmount(parseFloat(e.target.value)?.toFixed(2))}
+                onChange={(e) => setAmount(e.target.value)}
                 required
               />
             </div>
