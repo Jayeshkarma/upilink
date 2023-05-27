@@ -79,7 +79,7 @@ const UpiLinkGenerator = () => {
                 id="amount"
                 name="amount"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e) => setAmount(parseFloat(e.target.value)?.toFixed(2))}
                 required
               />
             </div>
