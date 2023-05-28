@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./styles.css";
+import { QRCode } from "react-qrcode-logo";
+import hrLogo from "./upi.png";
 
 const UpiLinkGenerator = () => {
   const [upiId, setUpiId] = useState("");
   const [amount, setAmount] = useState("");
   const [showForm, setShowForm] = useState(true);
   const [resultLink, setResultLink] = useState("");
-
+  const canvasRef = useRef(null);
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
@@ -24,47 +26,117 @@ const UpiLinkGenerator = () => {
     }
 
     // Generate result link
-    const resultLink = `upi://pay/?pn=withUpilink.in&pa=${upiId}&cu=INR&am=${parseFloat(amount)?.toFixed(2)}`;
+    const resultLink = `upi://pay/?pn=with Upilink.in &pa=${upiId}&cu=INR&am=${parseFloat(
+      amount
+    )?.toFixed(1)}`;
     setResultLink(resultLink);
     setShowForm(false);
   };
 
-  const handleCopyLink = () => {
-    const linkElement = document.createElement('textarea');
-    linkElement.value = resultLink;
-    linkElement.setAttribute('readonly', '');
-    linkElement.style.position = 'absolute';
-    linkElement.style.left = '-9999px';
-    document.body.appendChild(linkElement);
-    linkElement.select();
-    document.execCommand('copy');
-    document.body.removeChild(linkElement);
-    alert('Link copied to clipboard!');
+  const handleDownload = () => {
+    const qrCodeContainer = canvasRef.current;
+    const qrCodeCanvas = qrCodeContainer.querySelector("canvas");
+    const link = document.createElement("a");
+
+    // Convert canvas to data URL
+    const dataURL = qrCodeCanvas.toDataURL("image/png");
+
+    // Set the link's href and download attributes
+    link.href = dataURL;
+    link.download = `${upiId}-${amount}.png`;
+
+    // Simulate a click on the link to trigger the download
+    link.click();
   };
 
- const handleShareLink = () => {
-  const shareText = `Please make a payment of amount ${parseFloat(amount)?.toFixed(2)} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\nhttps://upi-payment-free-link-genrator.vercel.app/`;
-  const encodedResultLink = encodeURIComponent(resultLink);
-  const shareUrl = `${encodedResultLink}`;
+  const handleShare = () => {
+    const qrCodeContainer = canvasRef.current;
+    const qrCodeCanvas = qrCodeContainer.querySelector("canvas");
+    const link = document.createElement("a");
 
-  if (navigator.share) {
-    navigator.share({
-      title: 'UPI Payment Link',
-      text: shareText,
-      // url: resultLink
-    })
-      .then(() => {
-        console.log('Link shared successfully!');
-      })
-      .catch((error) => {
-        console.error('Error sharing link:', error);
-      });
-  } else {
-    console.warn('Sharing is not supported in this browser.');
-  }
-};
+    // Convert canvas to data URL
+    const dataURL = qrCodeCanvas.toDataURL("image/png");
+    const blob = dataURLToBlob(dataURL);
+    const file = new File([blob], "qrcode.png", { type: "image/png" });
+    const shareText = `Please make a payment of amount ${parseFloat(
+      amount
+    )?.toFixed(
+      1
+    )} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\nhttps://upi-payment-free-link-genrator.vercel.app/`;
+    const encodedResultLink = encodeURIComponent(resultLink);
+    if (navigator.share) {
+      navigator
+        .share({
+          files: [file],
+          title: "UPI Payment Link",
+          text: shareText,
+        })
+        .then(() => console.log("Shared successfully."))
+        .catch((error) => console.error("Error sharing:", error));
+    } else {
+      console.log("Web Share API not supported.");
+    }
+  };
+  const dataURLToBlob = (dataURL) => {
+    const parts = dataURL.split(";base64,");
+    const contentType = parts[0].split(":")[1];
+    const byteCharacters = atob(parts[1]);
+    const byteArrays = [];
 
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
 
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: contentType });
+  };
+
+  const handleCopyLink = () => {
+    const linkElement = document.createElement("textarea");
+    linkElement.value = resultLink;
+    linkElement.setAttribute("readonly", "");
+    linkElement.style.position = "absolute";
+    linkElement.style.left = "-9999px";
+    document.body.appendChild(linkElement);
+    linkElement.select();
+    document.execCommand("copy");
+    document.body.removeChild(linkElement);
+    alert("Link copied to clipboard!");
+  };
+
+  const handleShareLink = () => {
+    const shareText = `Please make a payment of amount ${parseFloat(
+      amount
+    )?.toFixed(
+      1
+    )} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\nhttps://upi-payment-free-link-genrator.vercel.app/`;
+    const encodedResultLink = encodeURIComponent(resultLink);
+    const shareUrl = `${encodedResultLink}`;
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "UPI Payment Link",
+          text: shareText,
+          // url: resultLink
+        })
+        .then(() => {
+          console.log("Link shared successfully!");
+        })
+        .catch((error) => {
+          console.error("Error sharing link:", error);
+        });
+    } else {
+      console.warn("Sharing is not supported in this browser.");
+    }
+  };
 
   const handleCreateNewLink = () => {
     setShowForm(true);
@@ -114,6 +186,27 @@ const UpiLinkGenerator = () => {
         ) : (
           <div className="result-card">
             <h2 className="title">Copy and Share</h2>
+            <div ref={canvasRef}>
+              <QRCode
+                value={`upi://pay?pn=with Upilink.in &pa=${upiId}&cu=INR&am=${parseFloat(
+                  amount
+                )?.toFixed(1)}`}
+                logoImage={hrLogo}
+                padding={10}
+                size={250}
+                logoOpacity={0.8}
+                logoWidth={80}
+              />
+            </div>
+            <div className="result-link">
+              <button className="copy-btn" onClick={handleDownload}>
+                Download
+              </button>
+              <span> </span>
+              <button className="copy-btn" onClick={handleShare}>
+                Share QR Code
+              </button>
+            </div>
             <p className="instruction">
               Copy and share this link with your customers to receive payments
               securely in your account.
@@ -125,7 +218,7 @@ const UpiLinkGenerator = () => {
               <button className="copy-btn" onClick={handleCopyLink}>
                 Copy Link
               </button>
-             <span> </span>
+              <span> </span>
               <button className="copy-btn" onClick={handleShareLink}>
                 Share Link
               </button>
@@ -152,7 +245,7 @@ const UpiLinkGenerator = () => {
           <li>iMobile App</li>
         </ul>
       </div>
-      <p style={{fontSize:'8px'}}>Version 1.02</p>
+      <p style={{ fontSize: "8px", marginTop: "15px" }}>Version 1.02</p>
     </div>
   );
 };
