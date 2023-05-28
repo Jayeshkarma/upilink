@@ -70,7 +70,7 @@ const UpiLinkGenerator = () => {
           files: [file],
           title: "UPI Payment Link",
           text: shareText,
-          url: dataURL,
+          // url: dataURL,
         })
         .then(() => console.log("Shared successfully."))
         .catch((error) => console.error("Error sharing:", error));
