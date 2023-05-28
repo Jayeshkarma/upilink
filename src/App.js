@@ -71,8 +71,8 @@ const UpiLinkGenerator = () => {
       navigator
         .share({
           files: [file],
-          title: "UPI Payment Link",
-          text: shareText,
+          title: shareText,
+          // text: shareText,
           // url: dataURL,
         })
         .then(() => console.log("Shared successfully."))
