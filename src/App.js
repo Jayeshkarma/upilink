@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import "./styles.css";
 import { QRCode } from "react-qrcode-logo";
 import hrLogo from "./upi.png";
+import toast, { Toaster } from 'react-hot-toast';
 
 const UpiLinkGenerator = () => {
   const [upiId, setUpiId] = useState("");
@@ -9,19 +10,21 @@ const UpiLinkGenerator = () => {
   const [showForm, setShowForm] = useState(true);
   const [resultLink, setResultLink] = useState("");
   const canvasRef = useRef(null);
+  const notify = (m) => toast(m);
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
     // UPI ID format validation
     const upiIdRegex = /^[a-zA-Z0-9]+@[a-zA-Z]+$/;
     if (!upiId.match(upiIdRegex)) {
-      alert("Invalid UPI ID format. Please enter a valid UPI ID.");
+      notify("Invalid UPI ID format. Please enter a valid UPI ID.");
       return;
     }
 
     // Amount validation
     if (isNaN(amount) || amount <= 0) {
-      alert("Invalid amount. Please enter a valid positive number.");
+      notify("Invalid amount. Please enter a valid positive number.");
       return;
     }
 
@@ -109,7 +112,7 @@ const UpiLinkGenerator = () => {
     linkElement.select();
     document.execCommand("copy");
     document.body.removeChild(linkElement);
-    alert("Link copied to clipboard!");
+    notify("Link copied to clipboard!");
   };
 
   const handleShareLink = () => {
@@ -148,6 +151,7 @@ const UpiLinkGenerator = () => {
 
   return (
     <div className="container">
+      <Toaster />
       <div className="card">
         {showForm ? (
           <form onSubmit={handleFormSubmit}>
