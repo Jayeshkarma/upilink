@@ -29,7 +29,7 @@ const UpiLinkGenerator = () => {
     }
 
     // Generate result link
-    const resultLink = `upi://pay/?pn=with Upilink.in &pa=${upiId}&cu=INR&am=${parseFloat(
+    const resultLink = `upi://pay/?pn=withUpilink.in&pa=${upiId}&cu=INR&am=${parseFloat(
       amount
     )?.toFixed(1)}`;
     setResultLink(resultLink);
