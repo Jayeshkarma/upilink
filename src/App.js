@@ -29,7 +29,7 @@ const UpiLinkGenerator = () => {
     }
 
     // Generate result link
-    const resultLink = `upi://pay/?pn=withUpilink.in&pa=${upiId}&cu=INR&am=${parseFloat(
+    const resultLink = `upi://pay/?pn=withquickpayslink.in&pa=${upiId}&cu=INR&am=${parseFloat(
       amount
     )?.toFixed(1)}`;
     setResultLink(resultLink);
@@ -65,7 +65,7 @@ const UpiLinkGenerator = () => {
       amount
     )?.toFixed(
       1
-    )} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\nhttps://upi-payment-free-link-genrator.vercel.app/`;
+    )} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\nhttps://www.quickpayslink.in/`;
     const encodedResultLink = encodeURIComponent(resultLink);
     if (navigator.share) {
       navigator
@@ -120,7 +120,7 @@ const UpiLinkGenerator = () => {
       amount
     )?.toFixed(
       1
-    )} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\nhttps://upi-payment-free-link-genrator.vercel.app/`;
+    )} using this UPI payment link:\n${resultLink}\n\nCreated with the secure UPI payment link generator:\nhttps://www.quickpayslink.in/`;
     const encodedResultLink = encodeURIComponent(resultLink);
     const shareUrl = `${encodedResultLink}`;
 
@@ -193,7 +193,7 @@ const UpiLinkGenerator = () => {
             <h2 className="title">Copy and Share</h2>
             <div ref={canvasRef}>
               <QRCode
-                value={`upi://pay?pn=with Upilink.in &pa=${upiId}&cu=INR&am=${parseFloat(
+                value={`upi://pay?pn=with quickpayslink.in &pa=${upiId}&cu=INR&am=${parseFloat(
                   amount
                 )?.toFixed(1)}`}
                 logoImage={hrLogo}
