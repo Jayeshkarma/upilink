@@ -29,7 +29,7 @@ const UpiLinkGenerator = () => {
     }
 
     // Generate result link
-    const resultLink = `upi://pay/?pn=withquickpayslink.in&pa=${upiId}&cu=INR&am=${parseFloat(
+    const resultLink = `upi://pay/?pn=withQuickpayslink.in&pa=${upiId}&cu=INR&am=${parseFloat(
       amount
     )?.toFixed(1)}`;
     setResultLink(resultLink);
@@ -193,7 +193,7 @@ const UpiLinkGenerator = () => {
             <h2 className="title">Copy and Share</h2>
             <div ref={canvasRef}>
               <QRCode
-                value={`upi://pay?pn=with quickpayslink.in &pa=${upiId}&cu=INR&am=${parseFloat(
+                value={`upi://pay?pn=with Quickpayslink.in &pa=${upiId}&cu=INR&am=${parseFloat(
                   amount
                 )?.toFixed(1)}`}
                 logoImage={hrLogo}
